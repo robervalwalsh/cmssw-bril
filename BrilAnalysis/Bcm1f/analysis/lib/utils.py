@@ -6,18 +6,19 @@ from optparse import OptionParser
 
 import settings
 
-das_client = False
 try:
    __import__('imp').find_module('das_client')
-   das_client = True
-   # Make things with supposed existing module
+   settings.das_client = True
 except ImportError:
    pass
 
-#import das_client  # for the cms dataset database
+try:
+   import DataFormats.FWLite
+   settings.fwlite = True
+except ImportError:
+   pass
 
 # ==============================================================================
-
 class MyOptionParser:
    """
 My option parser
@@ -47,6 +48,7 @@ My option parser
        output_file_help = "Name of the output file. Default = simrates_histograms.root"
        self.parser.add_option("--output_file", action="store", type="string", default="simrates_histograms.root",
                               dest="output_file", help=output_file_help)
+       self.parser.remove_option("-h")
                               
    def help(self):
       print TextColor.HELP
@@ -54,9 +56,9 @@ My option parser
       print TextColor.EXEC
    
    def opt_status(self):
-      options, args = self.parser.parse_args()
+      (options, args) = self.parser.parse_args()
       if options.input == "" :
-         print TextColor.FAIL + "*** error *** : You must provide an input." + TextColor.EXEC
+#         print TextColor.FAIL + "*** error *** : You must provide an input." + TextColor.EXEC
          self.help()
          return 0
       intype = "file"  # default
@@ -82,7 +84,7 @@ My option parser
          self.help()
          return 0
          
-      if intype == "dataset" and not das_client:
+      if intype == "dataset" and not settings.das_client:
          print TextColor.FAIL + "*** error *** : Cannot load das_client.py. Check your environment settings." + TextColor.EXEC
          self.help()
          return 0
@@ -95,6 +97,7 @@ My option parser
 Returns parse list of options
 """
        return self.parser.parse_args()
+
 
 # ______________________________________________________________________________
 
@@ -135,7 +138,7 @@ class TextColor:
     OKGREEN = '\033[92m'
     WARNING = '\033[93m'
     FAIL = '\033[91m'
-    ENDC = '\033[0m'
+    ENDC = '\033[m'
     HELP = '\033[36m'
     EXEC = '\033[97m'
 

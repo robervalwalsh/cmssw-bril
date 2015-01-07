@@ -12,7 +12,7 @@ import glob
 from datetime import datetime
 
 # https://docs.python.org/2/library/optparse.html
-from optparse import OptionParser
+#from optparse import OptionParser
 
 sys.path.append( "lib" )
 from utils import MyOptionParser
@@ -22,8 +22,10 @@ from analyzers import SimAnalyzer
 
 import ROOT
 
-ROOT.gROOT.SetBatch()
-ROOT.gROOT.SetStyle('Plain') # white background
+
+#ROOT.gROOT.SetBatch()
+#ROOT.gROOT.SetStyle('Plain') # white background
+
 
 # ___________________________________________________________________________________
 
@@ -36,6 +38,10 @@ def main():
       return 0
       
    options, _ = optmgr.get_opt() # tuple, unpack the return value and assign it the variable named to the left; _ single value to unpack
+   
+   print TextColor.EXEC
+
+
    
    # get list of files
    files = get_list_of_files( options.input )
@@ -53,9 +59,7 @@ def main():
    analysis.set_output_file(output)
 #   analysis.set_bx_space(bx_space)
 
-   print str(datetime.now())
    analysis.analyze()
-   print str(datetime.now())
    
 #   tof_hist = hists["time"][2051]
 #   c1 = ROOT.TCanvas()
@@ -64,8 +68,6 @@ def main():
 
 
 # ___________________________________________________________________________________
-
-print TextColor.EXEC
 
 if __name__ == '__main__':
    main()
