@@ -1,5 +1,7 @@
 #!/usr/bin/python2.6 -tt
 
+# to run standalone on lxplus one must use python 2.6 because there is no other standalone python installation
+
 import sys
 import os
 import json
