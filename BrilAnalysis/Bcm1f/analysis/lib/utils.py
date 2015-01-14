@@ -27,25 +27,28 @@ My option parser
        usage = "Usage: %prog [options]\n"
        usage += "For more help..."
        self.parser = OptionParser(usage=usage)
-       input_help = "Give the input data with its type. Possible types are file: (default), dir: or dataset: (at DESY T2)."
+       input_help = "Input data with its type. Possible types are file: (default), dir: or dataset: (at DESY T2)."
        self.parser.add_option("--input", action="store", type="string", default="",
                               dest="input", help=input_help)
-       input_format_help = "Give the input data format. Possible types are edm or ntuple."
+       input_format_help = "Input data format. Possible types are edm or ntuple. Default = ntuple."
        self.parser.add_option("--input_format", action="store", type="string", default="ntuple",
                               dest="input_format", help=input_format_help)
-       nevents_help = "Number of events to be processed. Default = -1 (all events)"
+       nevents_help = "Number of events to be processed. Default = -1 (all events)."
        self.parser.add_option("--max_events", action="store", type="int", default=-1,
                               dest="max_events", help=nevents_help)
-       pileup_help = "Number of pile-up events. Default = 0 (no pileup)"
+       pileup_help = "Number of pile-up events. Default = 0 (no pileup)."
        self.parser.add_option("--pileup", action="store", type="int", default=0,
                               dest="pileup", help=pileup_help)
-       vdmscan_help = "Number of VdM scan points. Default = 1 (no scan)"
-       self.parser.add_option("--n_scans", action="store", type="int", default=1,
-                              dest="n_scans", help=vdmscan_help)
-       bx_help = "Number of bunch crossings. Default = 1"
+       vdmscan_help = "Number of VdM scan points. Default = 1 (no scan)."
+       self.parser.add_option("--vdm_points", action="store", type="int", default=1,
+                              dest="vdm_points", help=vdmscan_help)
+       beamsw_help = "Width of beams convoluted gaussians in VdM. Default = 30 (um)."
+       self.parser.add_option("--beams_width", action="store", type="int", default=30,
+                              dest="beams_width", help=beamsw_help)
+       bx_help = "Number of bunch crossings. Default = 1."
        self.parser.add_option("--bx", action="store", type="int", default=1,
-                              dest="bx", help=vdmscan_help)
-       output_file_help = "Name of the output file. Default = simrates_histograms.root"
+                              dest="bx", help=bx_help)
+       output_file_help = "Name of the output file. Default = simrates_histograms.root."
        self.parser.add_option("--output_file", action="store", type="string", default="simrates_histograms.root",
                               dest="output_file", help=output_file_help)
        self.parser.remove_option("-h")

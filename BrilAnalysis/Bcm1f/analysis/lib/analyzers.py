@@ -1,3 +1,5 @@
+from math import exp, pi, sqrt
+
 from data_model import SimHit
 from data_model import SimpleHits
 from data_model import MyEvents
@@ -101,6 +103,7 @@ class SimAnalyzer:
       self._bx = 1
       self._nscans = 1
       self._bx_space = 25.
+      self._beamsw = 30.
       self._histograms = {}
       self._channels = []
       self.set_output_file()
@@ -125,9 +128,21 @@ class SimAnalyzer:
       scan_counter = 1
       bx_counter = 1
       bx_space = self._bx_space
+      width = self._beamsw
       simhits_bx = []  # list of simhits per bunch crossing
       
       scan_events = round(float(self._entries)/float(self._nscans))
+      scan_entries = []  # list of the number of events in each scan point
+     
+      if ( self._nscans > 1 ):
+         for i in range(self._nscans):
+           dist = -3.*width + i*6.*width/(self._nscans-1)
+           gaus = exp(-0.5*(dist)**2/width**2)
+           scan_entries.append(gaus)
+           
+         norm = sum(scan_entries)/self._entries
+         scan_entries[:] = [int(round(x / norm)) for x in scan_entries]
+      
 
       # loop over events
       for n,event in enumerate(self._events):
@@ -312,6 +327,11 @@ class SimAnalyzer:
 
    def set_vdm(self,nscans=1):
       self._nscans = nscans
+      
+# ___________________________________________________________
+
+   def set_beams_width(self,beamsw=300):
+      self._beamsw = beamsw
       
 # ___________________________________________________________
 
